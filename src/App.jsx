@@ -86,7 +86,7 @@ const App = () => {
   const [message, setMessage] = useState("");
   const [joined, setJoined] = useState(false);
 
-  const socket = useMemo(() => io("http://localhost:3000"), []);
+  const socket = useMemo(() => io("https://chat-applicatio-backend.onrender.com"), []);
 
   useEffect(() => {
     socket.on("connect", () => {
