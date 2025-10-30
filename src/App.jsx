@@ -86,7 +86,10 @@ const App = () => {
   const [message, setMessage] = useState("");
   const [joined, setJoined] = useState(false);
 
-  const socket = useMemo(() => io("https://chat-applicatio-backend.onrender.com"), []);
+  const socket = useMemo(
+    () => io("https://chat-application-backend.onrender.com"),
+    []
+  );
 
   useEffect(() => {
     socket.on("connect", () => {
@@ -224,7 +227,9 @@ const App = () => {
               >
                 <Typography variant="h6">{username}</Typography>
               </Box>
-              <Typography sx={{ p: 1, fontWeight: "bold" }}>Online Users</Typography>
+              <Typography sx={{ p: 1, fontWeight: "bold" }}>
+                Online Users
+              </Typography>
               <Divider />
               <List sx={{ flex: 1, overflowY: "auto" }}>
                 {Object.entries(onlineUsers)
@@ -292,7 +297,11 @@ const App = () => {
                         <Typography variant="body2">{msg.message}</Typography>
                         <Typography
                           variant="caption"
-                          sx={{ float: "right", opacity: 0.6, fontSize: "0.7rem" }}
+                          sx={{
+                            float: "right",
+                            opacity: 0.6,
+                            fontSize: "0.7rem",
+                          }}
                         >
                           {msg.time}
                         </Typography>
@@ -350,4 +359,3 @@ const App = () => {
 };
 
 export default App;
-
