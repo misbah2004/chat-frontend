@@ -86,10 +86,7 @@ const App = () => {
   const [message, setMessage] = useState("");
   const [joined, setJoined] = useState(false);
 
-  const socket = useMemo(
-    () => io("https://chat-application-backend.onrender.com"),
-    []
-  );
+  const socket = useMemo(() => io("https://chat-applicatio-backend.onrender.com"),[]);
 
   useEffect(() => {
     socket.on("connect", () => {
@@ -258,7 +255,7 @@ const App = () => {
                 flex: 1,
                 display: "flex",
                 flexDirection: "column",
-                backgroundImage: `url("https://i.imgur.com/3ZQ3Z6L.png")`,
+                backgroundImage: `url("https://i.pinimg.com/736x/8c/98/99/8c98994518b575bfd8c949e91d20548b.jpg")`,
                 backgroundSize: "cover",
               }}
             >
