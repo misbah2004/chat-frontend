@@ -60,7 +60,7 @@
 
 // export default App;
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import io from "socket.io-client";
 import {
   Box,
@@ -85,7 +85,10 @@ const App = () => {
   const [messages, setMessages] = useState({});
   const [message, setMessage] = useState("");
   const [joined, setJoined] = useState(false);
+  const messageRef = useRef(null);
+  console.log("🚀 ~ App ~ messageRef:", messageRef.current)
 
+  //http://localhost:3000
   const socket = useMemo(() => io("https://chat-applicatio-backend.onrender.com"),[]);
 
   useEffect(() => {
@@ -123,7 +126,6 @@ const App = () => {
     const msgData = { to: selectedUser, message };
 
     socket.emit("private-message", msgData);
-
     setMessages((prev) => {
       const updated = { ...prev };
       if (!updated[selectedUser]) updated[selectedUser] = [];
@@ -140,7 +142,11 @@ const App = () => {
 
     setMessage("");
   };
-
+  const throughINBottom = (e) => {
+    if (e) {
+      e.scrollTop = e.scrollHeight;
+    }
+  }
   return (
     <Box
       sx={{
@@ -273,7 +279,7 @@ const App = () => {
                 </Typography>
               </Box>
 
-              <Stack sx={{ flex: 1, p: 2, overflowY: "auto" }}>
+              <Stack  ref={messageRef} sx={{ flex: 1, p: 2, overflowY: "auto" }}>
                 {selectedUser &&
                   (messages[selectedUser] || []).map((msg, index) => {
                     const isMine = msg.sender === "You";
@@ -334,6 +340,7 @@ const App = () => {
                   <Button
                     type="submit"
                     variant="contained"
+                    onClick={throughINBottom(messageRef.current)}
                     sx={{
                       backgroundColor: "#128C7E",
                       borderRadius: "50%",
