@@ -86,20 +86,20 @@ const App = () => {
   const [message, setMessage] = useState("");
   const [joined, setJoined] = useState(false);
   const messageRef = useRef(null);
-  console.log("🚀 ~ App ~ messageRef:", messageRef.current)
 
-  //http://localhost:3000
-  const socket = useMemo(() => io("https://chat-applicatio-backend.onrender.com"),[]);
+  //https://chat-applicatio-backend.onrender.com
+  const socket = useMemo(() => io("http://localhost:3000"),[]);
 
   useEffect(() => {
     socket.on("connect", () => {
       setSocketId(socket.id);
     });
 
+    
     socket.on("user-list", (users) => {
       setOnlineUsers(users);
     });
-
+    
     socket.on("receive-message", (data) => {
       setMessages((prev) => {
         const updated = { ...prev };
@@ -108,17 +108,22 @@ const App = () => {
         return updated;
       });
     });
-
+    
     return () => socket.disconnect();
   }, [socket]);
-
+  
   const handleJoin = (e) => {
     e.preventDefault();
     if (!username.trim()) return;
     socket.emit("join", username);
     setJoined(true);
   };
-
+  
+  useEffect(() => {
+    if (messageRef.current) {
+      messageRef.current.scrollTop = messageRef.current.scrollHeight;
+    }
+  }, [messages, selectedUser]);
   const handleSend = (e) => {
     e.preventDefault();
     if (!message.trim() || !selectedUser) return;
@@ -143,6 +148,7 @@ const App = () => {
     setMessage("");
   };
   const throughINBottom = (e) => {
+    console.log("🚀 ~ throughINBottom ~ e:", e)
     if (e) {
       e.scrollTop = e.scrollHeight;
     }
@@ -340,7 +346,7 @@ const App = () => {
                   <Button
                     type="submit"
                     variant="contained"
-                    onClick={throughINBottom(messageRef.current)}
+                    onClick={() => throughINBottom(messageRef.current)}
                     sx={{
                       backgroundColor: "#128C7E",
                       borderRadius: "50%",
